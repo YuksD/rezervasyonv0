@@ -1,0 +1,22 @@
+.rectangle-container {
+    width: 365px;
+    height: 600px;
+    width: 90%;
+    max-width: 600px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.rectangle-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.date-button {
+    padding-bottom: 10px;
+}
