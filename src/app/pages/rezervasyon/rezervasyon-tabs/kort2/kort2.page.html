@@ -1,4 +1,12 @@
 <ion-content>
-  <div class="example-content">Kort2 Görünüm</div>
+  <ion-list>
+    <ion-item *ngFor="let slot of timeSlots" class="slot-item">
+      <ion-label class="slot-time">{{ slot.time }}</ion-label>
+      <div class="badges">
+        <ion-badge [color]="slot.isAvailable ? 'success' : 'danger'">
+          {{ slot.isAvailable ? 'Boş' : 'Dolu' }}
+        </ion-badge>
+      </div>
+    </ion-item>
+  </ion-list>
 </ion-content>
-

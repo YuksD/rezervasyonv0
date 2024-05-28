@@ -1,0 +1,30 @@
+.slot-time {
+    margin-left: -25px;
+    text-align: center;
+}
+
+ion-item.slot-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .time-label {
+    flex: 1;
+  }
+  
+  .badges {
+    display: flex;
+    justify-content: space-between;
+    flex: 3; 
+    gap: 18px;
+
+  }
+  
+  .badges ion-badge {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
