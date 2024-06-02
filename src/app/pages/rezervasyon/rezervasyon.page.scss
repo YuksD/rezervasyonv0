@@ -20,3 +20,30 @@
 .date-button {
     padding-bottom: 10px;
 }
+.custom-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .custom-modal .modal-wrapper {
+    height: 300px !important;
+    max-height: 300px !important;
+    width: 100% !important;
+    bottom: 0 !important;
+    top: auto !important;
+    position: absolute !important;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+  }
+
+  ion-modal {
+    --height: 45%;
+    // --border-radius: 10px 10px 0 0;
+  }
+  
+  ion-modal .block {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }

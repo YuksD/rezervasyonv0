@@ -1,0 +1,37 @@
+ion-content {
+    height: 300px;
+}
+
+.overflowed {
+    padding-inline-start: 60px;
+    padding-inline-end: 60px;
+}
+
+ion-input {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    border-radius: 15px; 
+    border: 2px solid #ccc; 
+  }
+
+
+  ion-radio {
+    margin: 4px;
+    border: 2px solid #000; 
+    border-radius: 50%; 
+}
+
+ion-label {
+    width: 100%;
+    margin: 0px;
+}
+
+
+.text-size {
+    font-size: 0.8em;
+}
+
+.talep-button {
+    border-radius: 15px; /* Köşeleri yumuşatma */
+
+  }

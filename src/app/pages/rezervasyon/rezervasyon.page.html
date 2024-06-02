@@ -1,21 +1,71 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button  size="small" shape="round" fill="clear" routerLink="/anasayfa" slot="start">
+    <ion-button size="small" shape="round" fill="clear" routerLink="/anasayfa" slot="start">
       <ion-icon slot="icon-only" name="reorder-three-outline"></ion-icon>
     </ion-button>
-    <ion-button size="small" shape="round" fill="clear" routerLink="/anasayfa" slot="start">
-      <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
-    </ion-button>
     <ion-title>REZERVASYON</ion-title>
-          <ion-button size="small" shape="round" fill="clear" routerLink="/anasayfa" slot="end">
-        <ion-icon slot="icon-only" name="person-outline"></ion-icon>
-      </ion-button>
+    <ion-button size="small" shape="round" fill="clear" routerLink="/anasayfa" slot="end">
+      <ion-icon slot="icon-only" name="person-outline"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <div class="rectangle-container">
   <div class="rectangle-content">
-    <ion-button class="date-button">12 Haziran 2024</ion-button>
+    <ion-button id="open-modal" expand="block">Rezervasyon Yap</ion-button>
+    <ion-modal trigger="open-modal" [initialBreakpoint]="1" [breakpoints]="[0, 1]">
+      <ng-template>
+        <div class="block">
+          <app-rezervasyon-modal></app-rezervasyon-modal>
+        </div>
+      </ng-template>
+    </ion-modal>
+    
+    <div>
+      <ion-row>
+
+     
+      <ion-col  size="2" >
+        <ion-button size="small" shape="round" fill="clear" (click)="oncekiGun()">
+          <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col  size="8" >
+        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+      </ion-col>
+      <ion-col  size="2" >
+        <ion-button size="small" shape="round" fill="clear" (click)="sonrakiGun()">
+          <ion-icon slot="icon-only" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    </div>
+    
+
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime
+          id="datetime"
+          presentation="date"
+          [(ngModel)]="selectedDate"
+          [formatOptions]="{
+            date: {
+              weekday: 'short',
+              month: 'long',
+              day: '2-digit',
+            },
+            time: {
+              hour: '2-digit',
+              minute: '2-digit',
+            },
+          }"
+        >
+
+
+      </ion-datetime>
+      </ng-template>
+    </ion-modal>
+
     <ion-content>
       <ion-tabs>
         <ion-tab-bar slot="top">
@@ -29,6 +79,3 @@
     </ion-content>
   </div>
 </div>
-
-
-
