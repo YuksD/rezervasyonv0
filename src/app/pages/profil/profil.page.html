@@ -1,15 +1,17 @@
 <ion-header [translucent]="true">
-  <ion-button routerLink="/anasayfa"> Ana Sayfa</ion-button>
-  <ion-button routerLink="/giris"> Çıkış Yap</ion-button>
-  <ion-toolbar>
-    <ion-title>profil</ion-title>
+  <ion-toolbar>      
+    <ion-title>Profil</ion-title>
+    <ion-button size="small" shape="round" fill="clear" routerLink="/anasayfa" slot="start">
+      <ion-icon slot="icon-only" name="home-outline"></ion-icon>
+    </ion-button>
+    <ion-button size="small" shape="round" fill="clear" routerLink="/giris" slot="end">
+      <ion-icon slot="icon-only" name="person-outline"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
+
+
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profil</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <p>PROFIL</p>
 </ion-content>

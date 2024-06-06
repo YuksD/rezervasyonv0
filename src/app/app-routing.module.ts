@@ -36,6 +36,10 @@ const routes: Routes = [
     path: 'rezervasyon',
     loadChildren: () => import('./pages/rezervasyon/rezervasyon.module').then( m => m.RezervasyonPageModule)
   },
+  {
+    path: 'profil',
+    loadChildren: () => import('./pages/profil/profil.module').then(m => m.ProfilPageModule)
+  },
   
 ];
 

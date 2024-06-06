@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { AnasayfaPageRoutingModule } from './anasayfa-routing.module';
 
 import { AnasayfaPage } from './anasayfa.page';
+import { GununMaciComponent } from './gunun-maci/gunun-maci.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { AnasayfaPage } from './anasayfa.page';
     IonicModule,
     AnasayfaPageRoutingModule
   ],
-  declarations: [AnasayfaPage]
+  declarations: [AnasayfaPage, GununMaciComponent]
 })
 export class AnasayfaPageModule {}

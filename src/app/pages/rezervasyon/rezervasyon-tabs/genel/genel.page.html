@@ -3,16 +3,16 @@
     <ion-item *ngFor="let slot of timeSlots" class="slot-item">
       <ion-label class="slot-time">{{ slot.time }}</ion-label>
       <div class="badges">
-        <ion-badge [color]="slot.kort1 ? 'success' : 'danger'">
+        <ion-badge [color]="slot.kort1 ? 'light' : 'warning'">
           {{ slot.kort1 ? 'Boş' : 'Dolu' }}
         </ion-badge>
-        <ion-badge [color]="slot.kort2 ? 'success' : 'danger'">
+        <ion-badge [color]="slot.kort2 ? 'light' : 'warning'">
           {{ slot.kort2 ? 'Boş' : 'Dolu' }}
         </ion-badge>
-        <ion-badge [color]="slot.kort3 ? 'success' : 'danger'">
+        <ion-badge [color]="slot.kort3 ? 'light' : 'warning'">
           {{ slot.kort3 ? 'Boş' : 'Dolu' }}
         </ion-badge>
-        <ion-badge [color]="slot.kort4 ? 'success' : 'danger'">
+        <ion-badge [color]="slot.kort4 ? 'light' : 'warning'">
           {{ slot.kort4 ? 'Boş' : 'Dolu' }}
         </ion-badge>
       </div>

@@ -3,7 +3,7 @@
     <ion-button size="small" shape="round" fill="clear" routerLink="/anasayfa" slot="start">
       <ion-icon slot="icon-only" name="reorder-three-outline"></ion-icon>
     </ion-button>
-    <ion-title>REZERVASYON</ion-title>
+    <ion-title>Rezervasyon</ion-title>
     <ion-button size="small" shape="round" fill="clear" routerLink="/anasayfa" slot="end">
       <ion-icon slot="icon-only" name="person-outline"></ion-icon>
     </ion-button>
@@ -12,7 +12,7 @@
 
 <div class="rectangle-container">
   <div class="rectangle-content">
-    <ion-button id="open-modal" expand="block">Rezervasyon Yap</ion-button>
+    <ion-button class="rezervasyon-yap-button" id="open-modal" expand="block">Rezervasyon Yap</ion-button>
     <ion-modal trigger="open-modal" [initialBreakpoint]="1" [breakpoints]="[0, 1]">
       <ng-template>
         <div class="block">
@@ -30,7 +30,7 @@
           <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
         </ion-button>
       </ion-col>
-      <ion-col  size="8" >
+      <ion-col  size="8">
         <ion-datetime-button datetime="datetime"></ion-datetime-button>
       </ion-col>
       <ion-col  size="2" >
