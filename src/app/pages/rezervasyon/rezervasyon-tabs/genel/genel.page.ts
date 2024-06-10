@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { KortService } from 'src/app/kort.service';
+import { KortService } from 'src/app/services/kort.service';
 
 @Component({
   selector: 'app-genel',

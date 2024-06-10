@@ -3,7 +3,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [],
+    "strict": false // Strict modu devre dışı bırakıldı
   },
   "files": [
     "src/main.ts",
