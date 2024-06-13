@@ -17,6 +17,10 @@ export class KayitPage implements OnInit {
   };
   confirmPassword: string = '';
 
+  phoneNumberInvalid: boolean = false;
+  passwordInvalid: boolean = false;
+  confirmPasswordInvalid: boolean = false;
+
   constructor(private userService: UserService, private router: Router, private alertController: AlertController) { }
 
   ngOnInit() {
@@ -24,8 +28,21 @@ export class KayitPage implements OnInit {
 
   // Kullanıcıyı kayıt etmek için çağrılan fonksiyon
   async register() {
+    this.resetValidationFlags();
+
+    if (!this.isPhoneNumberValid(this.user.phoneNumber)) {
+      this.phoneNumberInvalid = true;
+    }
+
+    if (!this.isPasswordValid(this.user.password)) {
+      this.passwordInvalid = true;
+    }
+
     if (this.user.password !== this.confirmPassword) {
-      this.showAlert('Hata', 'Şifreler eşleşmiyor');
+      this.confirmPasswordInvalid = true;
+    }
+
+    if (this.phoneNumberInvalid || this.passwordInvalid || this.confirmPasswordInvalid) {
       return;
     }
 
@@ -39,7 +56,21 @@ export class KayitPage implements OnInit {
       });
   }
 
-  // Kayıt başarılı olursa çağrılan fonksiyon
+  resetValidationFlags() {
+    this.phoneNumberInvalid = false;
+    this.passwordInvalid = false;
+    this.confirmPasswordInvalid = false;
+  }
+
+  isPhoneNumberValid(phoneNumber: string): boolean {
+    const phoneRegex = /^[0-9]{10}$/;
+    return phoneRegex.test(phoneNumber);
+  }
+
+  isPasswordValid(password: string): boolean {
+    return password.length >= 8;
+  }
+
   async showSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Başarılı',
@@ -55,7 +86,6 @@ export class KayitPage implements OnInit {
     await alert.present();
   }
 
-  // Genel amaçlı uyarı göstermek için kullanılan fonksiyon
   async showAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header,
