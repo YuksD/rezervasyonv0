@@ -3,7 +3,7 @@
     <ion-item *ngFor="let slot of timeSlots" class="slot-item">
       <ion-label class="slot-time">{{ slot.time }}</ion-label>
       <div class="badges">
-        <ion-badge [color]="slot.isAvailable ? 'light' : 'warning'">
+        <ion-badge [color]="slot.isAvailable ? 'light' : 'warning'" (click)="onBadgeClick(slot)">
           {{ slot.isAvailable ? 'Boş' : 'Dolu' }}
         </ion-badge>
       </div>
