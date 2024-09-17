@@ -9,7 +9,7 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./kort2.page.scss'],
 })
 export class Kort2Page implements OnInit {
-  timeSlots: { time: string, isAvailable: boolean }[] = [];
+  timeSlots: { time: string, isAvailable: boolean, player?: string }[] = [];
 
   constructor(
     private modalController: ModalController,

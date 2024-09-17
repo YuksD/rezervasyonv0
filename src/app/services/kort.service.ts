@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { KortDataService } from './kort-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,50 +8,69 @@ import { BehaviorSubject } from 'rxjs';
 export class KortService {
   private allSlots = new BehaviorSubject<{ kort: number, time: string, isAvailable: boolean }[]>([]);
   allSlots$ = this.allSlots.asObservable();
+  private rezervasyonlar: any[] = [];
 
-  constructor() { }
+  constructor(private kortDataService: KortDataService) { }
 
-  updateAllSlots(newSlots: { kort: number, time: string, isAvailable: boolean }[]) {
-    const currentSlots = this.allSlots.value;
-    const updatedSlots = [...currentSlots, ...newSlots];
-    this.allSlots.next(updatedSlots);
+  loadAllKortSlots() {
+    // Önce rezervasyon bilgilerini JSON'dan yükle
+    this.kortDataService.getRezervasyonlar().subscribe(rezervasyonlar => {
+      this.rezervasyonlar = rezervasyonlar.rezervasyonlar;
+
+      // Daha sonra kort bilgilerini yükle
+      this.kortDataService.getKortlar().subscribe(kortlar => {
+        kortlar.kortlar.forEach((kort: { kort: number; startHour: number; endHour: number; }) => {
+          this.loadKortSlots(kort.kort, kort.startHour, kort.endHour);
+        });
+      });
+    });
   }
 
-  updateKortSlots(kortNumber: number, slots: { time: string, isAvailable: boolean }[]) {
+  private loadKortSlots(kortNumber: number, startHour: number, endHour: number) {
+    const slots = this.generateTimeSlots(kortNumber, startHour, endHour);
+    this.updateKortSlots(kortNumber, slots);
+  }
+
+  private generateTimeSlots(kortNumber: number, startHour: number, endHour: number) {
+    const slots = [];
+    for (let hour = startHour; hour < endHour; hour++) {
+      slots.push({ 
+        time: `${hour}:00`, 
+        isAvailable: this.checkAvailability(kortNumber, `${hour}:00`),
+        player: this.getPlayer(kortNumber, `${hour}:00`)  // Oyuncu bilgisi ekleniyor
+      });
+      slots.push({ 
+        time: `${hour}:30`, 
+        isAvailable: this.checkAvailability(kortNumber, `${hour}:30`),
+        player: this.getPlayer(kortNumber, `${hour}:30`)  // Oyuncu bilgisi ekleniyor
+      });
+    }
+    return slots;
+  }
+  private getPlayer(kortNumber: number, time: string): string | undefined {
+    const reservation = this.rezervasyonlar.find(r => r.kort === kortNumber && r.time === time);
+    return reservation ? reservation.player : undefined;
+  }
+
+  private checkAvailability(kortNumber: number, time: string): boolean {
+    // Kort ve saat için rezervasyon yapılıp yapılmadığını kontrol et
+    const reservation = this.rezervasyonlar.find(r => r.kort === kortNumber && r.time === time);
+    return !reservation;  // Rezervasyon yoksa true (uygun), varsa false (dolu)
+  }
+
+  private updateKortSlots(kortNumber: number, slots: { time: string, isAvailable: boolean, player?: string }[]) {
     const kortSlots = slots.map(slot => ({
       kort: kortNumber,
       time: slot.time,
       isAvailable: slot.isAvailable,
+      player: slot.player || '' // Eğer player bilgisi varsa ekle, yoksa boş bırak
     }));
     this.updateAllSlots(kortSlots);
   }
 
-  loadAllKortSlots() {
-    this.loadKortSlots(1);
-    this.loadKortSlots(2);
-    this.loadKortSlots(3);
-    this.loadKortSlots(4);
-  }
-
-  private loadKortSlots(kortNumber: number) {
-    const slots = this.generateTimeSlots();
-    this.updateKortSlots(kortNumber, slots);
-  }
-
-  private generateTimeSlots() {
-    const startHour = 9;
-    const endHour = 21;
-    const slots = [];
-
-    for (let hour = startHour; hour < endHour; hour++) {
-      slots.push({ time: `${hour}:00`, isAvailable: this.checkAvailability(hour, 0) });
-      slots.push({ time: `${hour}:30`, isAvailable: this.checkAvailability(hour, 30) });
-    }
-
-    return slots;
-  }
-
-  private checkAvailability(hour: number, minute: number): boolean {
-    return Math.random() > 0.5; 
+  private updateAllSlots(newSlots: { kort: number, time: string, isAvailable: boolean }[]) {
+    const currentSlots = this.allSlots.value;
+    const updatedSlots = [...currentSlots, ...newSlots];
+    this.allSlots.next(updatedSlots);
   }
 }

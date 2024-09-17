@@ -9,7 +9,7 @@ import { KortService } from 'src/app/services/kort.service';
   styleUrls: ['./kort3.page.scss'],
 })
 export class Kort3Page implements OnInit {
-  timeSlots: { time: string, isAvailable: boolean }[] = [];
+  timeSlots: { time: string, isAvailable: boolean, player?: string }[] = [];
 
   constructor(
     private modalController: ModalController,

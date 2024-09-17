@@ -1,0 +1,34 @@
+{
+    "rezervasyonlar": [
+      { "kort": 1, "date": "2024-09-16", "time": "10:00", "player": "Ahmet" },
+      { "kort": 1, "date": "2024-09-16", "time": "10:30", "player": "Ahmet" },
+      { "kort": 1, "date": "2024-09-16", "time": "12:00", "player": "Osman" },
+      { "kort": 1, "date": "2024-09-16", "time": "12:30", "player": "Osman" },
+      { "kort": 1, "date": "2024-09-16", "time": "13:30", "player": "Veli" },
+      
+      { "kort": 2, "date": "2024-09-16", "time": "9:00", "player": "Rıza" },
+      { "kort": 2, "date": "2024-09-16", "time": "9:30", "player": "Rıza" },
+      { "kort": 2, "date": "2024-09-16", "time": "10:30", "player": "Ayşe" },
+      { "kort": 2, "date": "2024-09-16", "time": "11:30", "player": "Refik" },
+      { "kort": 2, "date": "2024-09-16", "time": "12:00", "player": "Refik" },
+      { "kort": 2, "date": "2024-09-16", "time": "13:00", "player": "Murtaza" },
+      { "kort": 2, "date": "2024-09-16", "time": "13:30", "player": "Murtaza" },
+
+      { "kort": 3, "date": "2024-09-16", "time": "9:00", "player": "Hayriye" },
+      { "kort": 3, "date": "2024-09-16", "time": "9:30", "player": "Hayriye" },
+      { "kort": 3, "date": "2024-09-16", "time": "10:00", "player": "Cevriye" },
+      { "kort": 3, "date": "2024-09-16", "time": "10:30", "player": "Cevriye" },
+      { "kort": 3, "date": "2024-09-16", "time": "11:30", "player": "Huriye" },
+      { "kort": 3, "date": "2024-09-16", "time": "12:00", "player": "Huriye" },
+      { "kort": 3, "date": "2024-09-16", "time": "13:00", "player": "Nuriye" },
+      { "kort": 3, "date": "2024-09-16", "time": "13:30", "player": "Nuriye" },
+
+      { "kort": 4, "date": "2024-09-16", "time": "9:00", "player": "Hediye" },
+      { "kort": 4, "date": "2024-09-16", "time": "9:30", "player": "Hediye" },
+      { "kort": 4, "date": "2024-09-16", "time": "11:30", "player": "Şükriye" },
+      { "kort": 4, "date": "2024-09-16", "time": "13:00", "player": "Rukiyesu" },
+      { "kort": 4, "date": "2024-09-16", "time": "13:30", "player": "Rukiyesu" }
+      
+    ]
+  }
+  

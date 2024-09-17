@@ -4,7 +4,7 @@
       <ion-label class="slot-time">{{ slot.time }}</ion-label>
       <div class="badges">
         <ion-badge [color]="slot.isAvailable ? 'light' : 'warning'" (click)="onBadgeClick(slot)">
-          {{ slot.isAvailable ? 'Boş' : 'Dolu' }}
+          {{ slot.isAvailable ? 'Boş' : slot.player }} <!-- Oyuncu adı gösteriliyor -->
         </ion-badge>
       </div>
     </ion-item>
