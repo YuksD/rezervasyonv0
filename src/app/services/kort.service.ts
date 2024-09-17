@@ -6,12 +6,13 @@ import { KortDataService } from './kort-data.service';
   providedIn: 'root'
 })
 export class KortService {
-  private allSlots = new BehaviorSubject<{ kort: number, time: string, isAvailable: boolean }[]>([]);
+  private allSlots = new BehaviorSubject<{ kort: number, time: string, isAvailable: boolean, player?: string }[]>([]);
   allSlots$ = this.allSlots.asObservable();
   private rezervasyonlar: any[] = [];
 
   constructor(private kortDataService: KortDataService) { }
 
+  // Kort ve rezervasyon bilgilerini yükleme
   loadAllKortSlots() {
     // Önce rezervasyon bilgilerini JSON'dan yükle
     this.kortDataService.getRezervasyonlar().subscribe(rezervasyonlar => {
@@ -26,11 +27,13 @@ export class KortService {
     });
   }
 
+  // Kort için slot bilgilerini yükleme
   private loadKortSlots(kortNumber: number, startHour: number, endHour: number) {
     const slots = this.generateTimeSlots(kortNumber, startHour, endHour);
     this.updateKortSlots(kortNumber, slots);
   }
 
+  // Kort için slotları oluşturma
   private generateTimeSlots(kortNumber: number, startHour: number, endHour: number) {
     const slots = [];
     for (let hour = startHour; hour < endHour; hour++) {
@@ -47,18 +50,22 @@ export class KortService {
     }
     return slots;
   }
+
+  // Oyuncu bilgisi alma
   private getPlayer(kortNumber: number, time: string): string | undefined {
     const reservation = this.rezervasyonlar.find(r => r.kort === kortNumber && r.time === time);
-    return reservation ? reservation.player : undefined;
+    return reservation ? reservation.player : undefined;  // Bulunursa oyuncu adını döner, yoksa null
   }
 
+  // Kort ve zaman için uygunluk kontrolü
   private checkAvailability(kortNumber: number, time: string): boolean {
     // Kort ve saat için rezervasyon yapılıp yapılmadığını kontrol et
     const reservation = this.rezervasyonlar.find(r => r.kort === kortNumber && r.time === time);
     return !reservation;  // Rezervasyon yoksa true (uygun), varsa false (dolu)
   }
 
-  private updateKortSlots(kortNumber: number, slots: { time: string, isAvailable: boolean, player?: string }[]) {
+  // Korttaki slotları güncelleme
+  public updateKortSlots(kortNumber: number, slots: { time: string, isAvailable: boolean, player?: string }[]) {
     const kortSlots = slots.map(slot => ({
       kort: kortNumber,
       time: slot.time,
@@ -68,9 +75,25 @@ export class KortService {
     this.updateAllSlots(kortSlots);
   }
 
-  private updateAllSlots(newSlots: { kort: number, time: string, isAvailable: boolean }[]) {
+  // Tüm slotları güncelleme
+  private updateAllSlots(newSlots: { kort: number, time: string, isAvailable: boolean, player?: string }[]) {
     const currentSlots = this.allSlots.value;
-    const updatedSlots = [...currentSlots, ...newSlots];
-    this.allSlots.next(updatedSlots);
+  
+    // Yeni slotları mevcut slotlar ile güncelle
+    const updatedSlots = currentSlots.map(slot => {
+      const matchingNewSlot = newSlots.find(newSlot => newSlot.kort === slot.kort && newSlot.time === slot.time);
+      
+      // Eğer yeni bir slot mevcut slot ile eşleşiyorsa onu güncelle
+      return matchingNewSlot ? { ...slot, ...matchingNewSlot } : slot;
+    });
+  
+    // Yeni slotlardan, mevcut slotlarda olmayanları ekle
+    const additionalSlots = newSlots.filter(newSlot => 
+      !currentSlots.some(slot => slot.kort === newSlot.kort && slot.time === newSlot.time)
+    );
+  
+    // Mevcut slotları güncelle ve yeni slotları ekle
+    this.allSlots.next([...updatedSlots, ...additionalSlots]);
   }
+  
 }

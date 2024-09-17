@@ -10,6 +10,7 @@ export class RezervasyonModalComponent implements OnInit {
   startTime: string = '20:00';  
   endTime: string = '';        
   selectedDuration: number = 60; 
+  playerName: string = '';  // Kullanıcı adı için bir değişken ekleyin
 
   constructor(private modalController: ModalController) { }
 
@@ -30,5 +31,14 @@ export class RezervasyonModalComponent implements OnInit {
 
   dismiss() {
     this.modalController.dismiss();
+  }
+
+  async reserve() {
+    await this.modalController.dismiss({
+      player: this.playerName,
+      startTime: this.startTime,
+      endTime: this.endTime,
+      duration: this.selectedDuration
+    });
   }
 }
