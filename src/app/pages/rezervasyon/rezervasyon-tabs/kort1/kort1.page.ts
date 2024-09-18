@@ -11,6 +11,7 @@ import { KortService } from 'src/app/services/kort.service';
 export class Kort1Page implements OnInit {
   // Tüm zaman slotlarını ve oyuncu bilgilerini içeren liste
   timeSlots: { time: string, isAvailable: boolean, player?: string }[] = [];
+  selectedDate: string = new Date().toISOString(); // Seçili tarih
 
   constructor(
     private modalController: ModalController,
@@ -29,23 +30,27 @@ export class Kort1Page implements OnInit {
     if (slot.isAvailable) {
       const modal = await this.modalController.create({
         component: RezervasyonModalComponent,
-        cssClass: 'custom-modal'
+        cssClass: 'custom-modal',
+        componentProps: {
+          startTime: slot.time,  // Başlangıç saati modala gönderiliyor
+          endTime: '',            // Bitiş saati modül içinde hesaplanacak
+          selectedDate: this.selectedDate  // Tarih bilgisini modal'a ilet
+        }
       });
-
-      // Modal kapandığında gelen bilgiyi işleme al
+  
       modal.onDidDismiss().then((result) => {
         const data = result.data;
         if (data) {
           this.reserveSlot(slot.time, data);  // Slotu rezerve et
         }
       });
-
+  
       await modal.present();
     } else {
       console.log('Slot dolu, rezervasyon yapılamaz.');
     }
   }
-
+  
   // Slotu rezerve etme işlemi
   reserveSlot(time: string, data: { player: string; startTime: string; endTime: string; duration: number }) {
     const updatedSlots = this.timeSlots.map(slot => {

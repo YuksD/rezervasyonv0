@@ -17,10 +17,15 @@ export class RezervasyonPage implements OnInit {
     this.selectedDate = new Date().toISOString();
   }
 
-  async openReservationModal() {
+  async openReservationModal(startTime: string, endTime: string) {
     const modal = await this.modalController.create({
       component: RezervasyonModalComponent,
-      cssClass: 'custom-modal'
+      cssClass: 'custom-modal',
+      componentProps: {
+        startTime: startTime,
+        endTime: endTime,
+        selectedDate: this.selectedDate  // Tarih bilgisini modal'a ilet
+      }
     });
     return await modal.present();
   }

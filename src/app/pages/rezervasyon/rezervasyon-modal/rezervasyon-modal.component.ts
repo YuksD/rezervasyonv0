@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -7,17 +7,19 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./rezervasyon-modal.component.scss'],
 })
 export class RezervasyonModalComponent implements OnInit {
-  startTime: string = '20:00';  
-  endTime: string = '';        
-  selectedDuration: number = 60; 
-  playerName: string = '';  // Kullanıcı adı için bir değişken ekleyin
+  @Input() startTime: string = '';  // Başlangıç saati
+  @Input() endTime: string = '';    // Bitiş saati (ilk hesaplama için)
+  @Input() selectedDate: string = '';
+  selectedDuration: number = 60;    // Varsayılan süre
+  playerName: string = '';          // Oyuncu ismi
 
   constructor(private modalController: ModalController) { }
 
   ngOnInit() {
-    this.updateEndTime();  
+    this.updateEndTime();  // Başlangıçta endTime hesaplanıyor
   }
 
+  // Süre değiştiğinde bitiş saatini yeniden hesapla
   updateEndTime() {
     const [startHour, startMinute] = this.startTime.split(':').map(Number);
     const totalStartMinutes = startHour * 60 + startMinute;
@@ -28,6 +30,13 @@ export class RezervasyonModalComponent implements OnInit {
     const formattedEndMinute = endMinute.toString().padStart(2, '0');
     this.endTime = `${formattedEndHour}:${formattedEndMinute}`;
   }
+
+  // Süreyi butonlarla seç
+  selectDuration(duration: number) {
+    this.selectedDuration = duration;  // Süreyi güncelle
+    this.updateEndTime();  // Yeni süreye göre bitiş saatini hesapla
+  }
+  
 
   dismiss() {
     this.modalController.dismiss();

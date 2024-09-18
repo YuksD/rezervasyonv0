@@ -29,17 +29,20 @@ export class Kort2Page implements OnInit {
     if (slot.isAvailable) {
       const modal = await this.modalController.create({
         component: RezervasyonModalComponent,
-        cssClass: 'custom-modal'
+        cssClass: 'custom-modal',
+        componentProps: {
+          startTime: slot.time,  // Başlangıç saati modala gönderiliyor
+          endTime: ''            // Bitiş saati modül içinde hesaplanacak
+        }
       });
-
-      // Modal kapandığında gelen bilgiyi işleme al
+  
       modal.onDidDismiss().then((result) => {
         const data = result.data;
         if (data) {
           this.reserveSlot(slot.time, data);  // Slotu rezerve et
         }
       });
-
+  
       await modal.present();
     } else {
       console.log('Slot dolu, rezervasyon yapılamaz.');
