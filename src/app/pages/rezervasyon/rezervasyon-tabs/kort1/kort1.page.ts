@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { RezervasyonModalComponent } from 'src/app/pages/rezervasyon/rezervasyon-modal/rezervasyon-modal.component';
 import { KortService } from 'src/app/services/kort.service';
+import { DateService } from 'src/app/services/date.service';
 
 @Component({
   selector: 'app-kort1',
@@ -9,23 +10,75 @@ import { KortService } from 'src/app/services/kort.service';
   styleUrls: ['./kort1.page.scss'],
 })
 export class Kort1Page implements OnInit {
-  // Tüm zaman slotlarını ve oyuncu bilgilerini içeren liste
-  timeSlots: { time: string, isAvailable: boolean, player?: string }[] = [];
-  selectedDate: string = new Date().toISOString(); // Seçili tarih
+  timeSlots: { kort: number; time: string; isAvailable: boolean; player?: string; date: string }[] = [];
+  selectedDate: string = 'today';
 
   constructor(
     private modalController: ModalController,
-    private kortService: KortService
-  ) { }
+    private kortService: KortService,
+    private dateService: DateService
+  ) {}
 
   ngOnInit() {
-    // Kort1'e ait slotları filtrele ve göster
-    this.kortService.allSlots$.subscribe(slots => {
-      this.timeSlots = slots.filter(slot => slot.kort === 1);
+    // Seçilen tarihi takip et
+    this.dateService.selectedDate$.subscribe(date => {
+      this.selectedDate = date;
+      this.loadSlots();  // Seçilen tarihe ve kort numarasına göre verileri yükle
     });
   }
 
-  // Rezervasyon yapma modalını açma ve işlem yapma
+  loadSlots() {
+    this.kortService.allSlots$.subscribe(slots => {
+      // Kort numarasına göre filtreleme yap (Kort 1)
+      const kort1Slots = slots.filter(slot => slot.kort === 1);
+      
+      // Tarih formatını belirle
+      let actualDate: string;
+      const today = new Date();
+      
+      if (this.selectedDate === 'today') {
+          actualDate = today.toISOString().split('T')[0]; // Bugünün tarihi
+      } else if (this.selectedDate === 'tomorrow') {
+          today.setDate(today.getDate() + 1);
+          actualDate = today.toISOString().split('T')[0]; // Yarınki tarih
+      } else {
+          actualDate = this.selectedDate; // Eğer başka bir tarih varsa
+      }
+
+      // Kortun tüm zaman dilimlerini oluşturun (08:00-22:00 gibi)
+      const allTimeSlots = this.generateTimeSlotsForDay(8, 22); // 08:00 - 22:00 arası
+
+      // Gelen kort1 rezervasyonlarıyla boş slotları birleştirin
+      const filteredSlots = allTimeSlots.map(time => {
+          const reservedSlot = kort1Slots.find(slot => slot.time === time && slot.date === actualDate);
+          return reservedSlot ? reservedSlot : {
+              kort: 1,  // Kort numarası
+              time: time,
+              isAvailable: true,  // Eğer rezervasyon yoksa boş slot
+              player: '',
+              date: actualDate
+          };
+      });
+      console.log('Actual date:', actualDate);
+      console.log('Filtered slots:', filteredSlots);
+
+
+      // Ekranda gösterilecek slotları ayarla
+      this.timeSlots = filteredSlots;
+    });
+  }
+
+  // 08:00-22:00 arası her yarım saatte bir zaman dilimi üretir
+  private generateTimeSlotsForDay(startHour: number, endHour: number): string[] {
+    const timeSlots = [];
+    for (let hour = startHour; hour < endHour; hour++) {
+      timeSlots.push(`${hour}:00`);
+      timeSlots.push(`${hour}:30`);
+    }
+    return timeSlots;
+  }
+
+  // Modal açma ve rezervasyon yapma fonksiyonu
   async onBadgeClick(slot: any) {
     if (slot.isAvailable) {
       const modal = await this.modalController.create({
@@ -33,8 +86,7 @@ export class Kort1Page implements OnInit {
         cssClass: 'custom-modal',
         componentProps: {
           startTime: slot.time,  // Başlangıç saati modala gönderiliyor
-          endTime: '',            // Bitiş saati modül içinde hesaplanacak
-          selectedDate: this.selectedDate  // Tarih bilgisini modal'a ilet
+          endTime: ''            // Bitiş saati modül içinde hesaplanacak
         }
       });
   
@@ -50,7 +102,7 @@ export class Kort1Page implements OnInit {
       console.log('Slot dolu, rezervasyon yapılamaz.');
     }
   }
-  
+
   // Slotu rezerve etme işlemi
   reserveSlot(time: string, data: { player: string; startTime: string; endTime: string; duration: number }) {
     const updatedSlots = this.timeSlots.map(slot => {

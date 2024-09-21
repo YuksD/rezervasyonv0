@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { RezervasyonModalComponent } from 'src/app/pages/rezervasyon/rezervasyon-modal/rezervasyon-modal.component';
 import { KortService } from 'src/app/services/kort.service';
+import { DateService } from 'src/app/services/date.service';
 
 @Component({
   selector: 'app-kort3',
@@ -9,22 +10,41 @@ import { KortService } from 'src/app/services/kort.service';
   styleUrls: ['./kort3.page.scss'],
 })
 export class Kort3Page implements OnInit {
-  // Tüm zaman slotlarını ve oyuncu bilgilerini içeren liste
-  timeSlots: { time: string, isAvailable: boolean, player?: string }[] = [];
+  timeSlots: { kort: number; time: string; isAvailable: boolean; player?: string; date: string }[] = [];
+  selectedDate: string = 'today';
 
   constructor(
     private modalController: ModalController,
-    private kortService: KortService
-  ) { }
+    private kortService: KortService,
+    private dateService: DateService
+  ) {}
 
   ngOnInit() {
-    // Kort1'e ait slotları filtrele ve göster
-    this.kortService.allSlots$.subscribe(slots => {
-      this.timeSlots = slots.filter(slot => slot.kort === 3);
+    // Seçilen tarihi takip et
+    this.dateService.selectedDate$.subscribe(date => {
+      this.selectedDate = date;
+      this.loadSlots();  // Seçilen tarihe ve kort numarasına göre verileri yükle
     });
   }
 
-  // Rezervasyon yapma modalını açma ve işlem yapma
+  loadSlots() {
+    this.kortService.allSlots$.subscribe(slots => {
+      // Kort numarasına göre filtreleme yap (Kort 3)
+      const kort3Slots = slots.filter(slot => slot.kort === 3);
+  
+      // Seçilen tarihe göre filtreleme yap
+      const filteredSlots = kort3Slots.filter(slot => slot.date === this.selectedDate);
+  
+      // Ekranda gösterilecek slotları ayarla
+      this.timeSlots = filteredSlots.map(slot => ({
+        ...slot,
+        date: this.selectedDate // veya mevcut tarih bilgisini buraya ekleyin
+      }));
+    });
+  }
+  
+
+  // Modal açma ve rezervasyon yapma fonksiyonu
   async onBadgeClick(slot: any) {
     if (slot.isAvailable) {
       const modal = await this.modalController.create({
@@ -68,4 +88,4 @@ export class Kort3Page implements OnInit {
     // Kort bilgilerini KortService'e göndererek güncelle
     this.kortService.updateKortSlots(3, updatedSlots);  // Kort numarasını doğru girdiğinizden emin olun.
   }
-}3
+}

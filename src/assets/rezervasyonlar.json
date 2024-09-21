@@ -1,10 +1,8 @@
 {
     "rezervasyonlar": [
-      { "kort": 1, "date": "2024-09-16", "time": "10:00", "player": "Ahmet" },
-      { "kort": 1, "date": "2024-09-16", "time": "10:30", "player": "Ahmet" },
-      { "kort": 1, "date": "2024-09-16", "time": "12:00", "player": "Osman" },
-      { "kort": 1, "date": "2024-09-16", "time": "12:30", "player": "Osman" },
-      { "kort": 1, "date": "2024-09-16", "time": "13:30", "player": "Veli" },
+      { "kort": 1, "date": "2024-09-22", "time": "10:00", "player": "Ahmet" },
+      { "kort": 1, "date": "2024-09-21", "time": "10:30", "player": "Ahmet" },
+
       
       { "kort": 2, "date": "2024-09-16", "time": "9:00", "player": "Rıza" },
       { "kort": 2, "date": "2024-09-16", "time": "9:30", "player": "Rıza" },

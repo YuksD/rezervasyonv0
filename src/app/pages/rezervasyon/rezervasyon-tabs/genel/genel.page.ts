@@ -22,7 +22,7 @@ export class GenelPage implements OnInit {
     });
   }
 
-  mergeTimeSlots(slots: { kort: number, time: string, isAvailable: boolean }[]) {
+  mergeTimeSlots(slots: { kort: number, time: string, isAvailable: boolean, date: string }[]) {
     const kort1Slots = slots.filter(slot => slot.kort === 1);
     const kort2Slots = slots.filter(slot => slot.kort === 2);
     const kort3Slots = slots.filter(slot => slot.kort === 3);

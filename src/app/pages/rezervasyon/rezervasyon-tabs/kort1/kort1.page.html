@@ -1,13 +1,12 @@
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let slot of timeSlots" class="slot-item">
-      <ion-label class="slot-time">{{ slot.time }}</ion-label>
-      <div class="badges">
-        <ion-badge [color]="slot.isAvailable ? 'light' : 'warning'" (click)="onBadgeClick(slot)">
-          <!-- Eğer slot doluysa oyuncunun ismini göster, boşsa 'Boş' yaz -->
-          {{ slot.isAvailable ? 'Boş' : (slot.player || 'Dolu') }}
-        </ion-badge>
-      </div>
+    <ion-item *ngFor="let slot of timeSlots">
+      <ion-label>
+        {{ slot.time }} - {{ slot.isAvailable ? 'Boş' : 'Dolu' }}
+      </ion-label>
+      <ion-button (click)="onBadgeClick(slot)" [disabled]="!slot.isAvailable">
+        Rezervasyon Yap
+      </ion-button>
     </ion-item>
   </ion-list>
 </ion-content>
