@@ -1,3 +1,21 @@
+:host {
+  background: rgba(236, 241, 243, 0.158)
+}
+ion-tab-button.selected {
+  background-color: #000000ad; /* dark background for selected tab */
+  color: white; /* text color */
+}
+.selected {
+  --background-activated: #000000ad;
+  --background: #000000ad; /* Seçili buton için koyu arka plan rengi */
+  color: whitesmoke; /* Yazı rengi */
+}
+
+.not-selected {
+  --background-activated: #000000ad;
+  --background: #f0f0f0; /* Seçili olmayan buton için açık arka plan rengi */
+  color: #000000ad; /* Yazı rengi */
+}
 .rectangle-container {
     width: 365px;
     height: 600px;
@@ -16,9 +34,16 @@
     display: flex;
     flex-direction: column;
 }
-
+.day-selector{
+  overflow: hidden;
+  border-radius: 15px;
+  // --background: #000000ad;
+  // color: whitesmoke;
+}
 .date-button {
+    
     padding-bottom: 10px;
+    
 }
 .custom-modal {
     display: flex;

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'; // Router'ı içe aktar
 import { ModalController } from '@ionic/angular';
 import { RezervasyonModalComponent } from './rezervasyon-modal/rezervasyon-modal.component';
 import { DateService } from 'src/app/services/date.service'; // DateService'i içe aktar
@@ -10,10 +11,12 @@ import { DateService } from 'src/app/services/date.service'; // DateService'i i�
 })
 export class RezervasyonPage implements OnInit {
   selectedDate: string = new Date().toISOString();
+  selectedDay: string = 'today'; // Seçilen gün başlangıçta 'today' olarak ayarlanır.
 
   constructor(
     private modalController: ModalController,
-    private dateService: DateService // DateService'i constructor'a ekle
+    private dateService: DateService, // DateService'i constructor'a ekle
+    public router: Router
   ) {}
 
   async ngOnInit() {
@@ -52,17 +55,19 @@ export class RezervasyonPage implements OnInit {
   setDate(value: string) {
     const today = new Date();
     let selectedDateObj: Date;
-  
+
     if (value === 'today') {
-      selectedDateObj = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+      selectedDateObj = today; // Bugünün tarihi
+      this.selectedDay = 'today'; // Seçilen gün 'today' olarak güncellenir.
     } else if (value === 'tomorrow') {
-      selectedDateObj = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2);
+      selectedDateObj = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+      this.selectedDay = 'tomorrow'; // Seçilen gün 'tomorrow' olarak güncellenir.
     } else {
       selectedDateObj = new Date(); // Varsayılan bir tarih ataması yap
     }
-  
+
     this.selectedDate = selectedDateObj.toISOString();
-    this.dateService.setSelectedDate(selectedDateObj.toISOString().split('T')[0]); // Tarihi DateService'e güncelle
+    this.dateService.setSelectedDate(selectedDateObj.toISOString().split('T')[0]);
   }
   
 }
