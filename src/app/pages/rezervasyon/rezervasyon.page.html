@@ -76,26 +76,27 @@
       </ion-col>
     </ion-row>
 
-    <ion-content>
+    <ion-content class="custom-colored-content">
       <ion-tabs>
-        <ion-tab-bar slot="top">
-          <ion-tab-button tab="genel" [ngClass]="{ 'selected': router.url.includes('genel') }">
-            Genel
+        <ion-tab-bar class="custom-tab-bar" slot="top">
+          <ion-tab-button tab="genel" class="kort-button genel-tab" [ngClass]="{ 'selected': router.url.includes('genel'), 'not-selected': !router.url.includes('genel') }">
+            HEPSİ
           </ion-tab-button>
-          <ion-tab-button tab="kort1" [ngClass]="{ 'selected': router.url.includes('kort1') }">
-            Kort 1
+          <ion-tab-button tab="kort1" class="kort-button" [ngClass]="{ 'selected': router.url.includes('kort1'), 'not-selected': !router.url.includes('kort1') }">
+            K1
           </ion-tab-button>
-          <ion-tab-button tab="kort2" [ngClass]="{ 'selected': router.url.includes('kort2') }">
-            Kort 2
+          <ion-tab-button tab="kort2" class="kort-button" [ngClass]="{ 'selected': router.url.includes('kort2'), 'not-selected': !router.url.includes('kort2') }">
+            K2
           </ion-tab-button>
-          <ion-tab-button tab="kort3" [ngClass]="{ 'selected': router.url.includes('kort3') }">
-            Kort 3
+          <ion-tab-button tab="kort3" class="kort-button" [ngClass]="{ 'selected': router.url.includes('kort3'), 'not-selected': !router.url.includes('kort3') }">
+            K3
           </ion-tab-button>
-          <ion-tab-button tab="kort4" [ngClass]="{ 'selected': router.url.includes('kort4') }">
-            Kort 4
+          <ion-tab-button tab="kort4" class="kort-button" [ngClass]="{ 'selected': router.url.includes('kort4'), 'not-selected': !router.url.includes('kort4') }">
+            K4
           </ion-tab-button>
         </ion-tab-bar>
       </ion-tabs>
     </ion-content>
+    
   </div>
 </div>
