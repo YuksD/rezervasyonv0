@@ -31,18 +31,52 @@ export class Kort2Page implements OnInit {
     this.kortService.allSlots$.subscribe(slots => {
       // Kort numarasına göre filtreleme yap (Kort 2)
       const kort2Slots = slots.filter(slot => slot.kort === 2);
-  
-      // Seçilen tarihe göre filtreleme yap
-      const filteredSlots = kort2Slots.filter(slot => slot.date === this.selectedDate);
-  
+      
+      // Tarih formatını belirle
+      let actualDate: string;
+      const today = new Date();
+      
+      if (this.selectedDate === 'today') {
+          actualDate = today.toISOString().split('T')[0]; // Bugünün tarihi
+      } else if (this.selectedDate === 'tomorrow') {
+          today.setDate(today.getDate() + 1);
+          actualDate = today.toISOString().split('T')[0]; // Yarınki tarih
+      } else {
+          actualDate = this.selectedDate; // Eğer başka bir tarih varsa
+      }
+
+      // Kortun tüm zaman dilimlerini oluşturun (08:00-22:00 gibi)
+      const allTimeSlots = this.generateTimeSlotsForDay(8, 22); // 08:00 - 22:00 arası
+
+      // Gelen kort2 rezervasyonlarıyla boş slotları birleştirin
+      const filteredSlots = allTimeSlots.map(time => {
+          const reservedSlot = kort2Slots.find(slot => slot.time === time && slot.date === actualDate);
+          return reservedSlot ? reservedSlot : {
+              kort: 2,  // Kort numarası
+              time: time,
+              isAvailable: true,  // Eğer rezervasyon yoksa boş slot
+              player: '',
+              date: actualDate
+          };
+      });
+      console.log('Actual date:', actualDate);
+      console.log('Filtered slots:', filteredSlots);
+
+
       // Ekranda gösterilecek slotları ayarla
-      this.timeSlots = filteredSlots.map(slot => ({
-        ...slot,
-        date: this.selectedDate // veya mevcut tarih bilgisini buraya ekleyin
-      }));
+      this.timeSlots = filteredSlots;
     });
   }
-  
+
+  // 08:00-22:00 arası her yarım saatte bir zaman dilimi üretir
+  private generateTimeSlotsForDay(startHour: number, endHour: number): string[] {
+    const timeSlots = [];
+    for (let hour = startHour; hour < endHour; hour++) {
+      timeSlots.push(`${hour}:00`);
+      timeSlots.push(`${hour}:30`);
+    }
+    return timeSlots;
+  }
 
   // Modal açma ve rezervasyon yapma fonksiyonu
   async onBadgeClick(slot: any) {

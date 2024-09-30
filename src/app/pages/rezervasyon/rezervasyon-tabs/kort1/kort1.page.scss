@@ -1,4 +1,7 @@
 ion-item.slot-item {
+  --padding-start: 4px;
+  --padding-end: 4px;
+  --inner-padding-end: 6px;
   --background: #F9F8F6;
   display: flex;
   align-items: center;
@@ -9,7 +12,7 @@ ion-item.slot-item {
 
 /* Zaman etiketinin alanını ayarlayın */
 .time-label {
-  flex: 0 0 15%; /* Zaman etiketinin genişliği */
+  flex: 0 0 18%; /* Zaman etiketinin genişliği */
   text-align: center; /* Saat metnini ortala */
   color: white; /* Yazının iç rengi beyaz */
   font-weight: 800; /* Yazıyı kalın yap */
