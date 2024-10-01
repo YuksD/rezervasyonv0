@@ -60,21 +60,21 @@
     <ion-modal [keepContentsMounted]="true">
       <ng-template>
         <ion-datetime
-          id="datetime"
-          presentation="date"
-          [(ngModel)]="selectedDate"
-          [formatOptions]="{
-            date: {
-              weekday: 'short',
-              month: 'long',
-              day: '2-digit'
-            },
-            time: {
-              hour: '2-digit',
-              minute: '2-digit'
-            }
-          }">
-        </ion-datetime>
+    id="datetime"
+    presentation="date"
+    [(ngModel)]="selectedDate"
+    [formatOptions]="{
+        date: {
+            weekday: 'short',
+            month: 'long',
+            day: '2-digit'
+        },
+        time: {
+            hour: '2-digit',
+            minute: '2-digit'
+        }
+    }">
+</ion-datetime>
       </ng-template>
     </ion-modal>
 

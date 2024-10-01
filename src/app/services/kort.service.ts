@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { KortDataService } from './kort-data.service';
+import { DateService } from './date.service';  // DateService'i içe aktar
 
 interface Kort {
   kort: number;
@@ -16,7 +17,20 @@ export class KortService {
   allSlots$ = this.allSlots.asObservable();
   private rezervasyonlar: any[] = [];
 
-  constructor(private kortDataService: KortDataService) {}
+  constructor(private kortDataService: KortDataService, private dateService: DateService) {
+    // DateService'e abone ol
+    this.dateService.selectedDate$.subscribe(selectedDate => {
+      this.loadSlotsForDate(selectedDate);  // Seçilen tarihi kullanarak slotları yükle
+    });
+  }
+
+  // Seçilen tarih için slotları yükle
+  private loadSlotsForDate(selectedDate: string) {
+    this.loadAllKortSlots(); // Tüm slotları yükle veya tarih filtrelemesi yap
+    // Tüm slotları filtreleyin
+    const filteredSlots = this.allSlots.value.filter(slot => slot.date === selectedDate);
+    this.allSlots.next(filteredSlots); // Filtrelenmiş slotları yayınlayın
+  }
 
   // Kort ve rezervasyon bilgilerini yükleme
   loadAllKortSlots() {

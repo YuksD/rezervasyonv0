@@ -11,7 +11,7 @@ import { DateService } from 'src/app/services/date.service';
 })
 export class Kort3Page implements OnInit {
   timeSlots: { kort: number; time: string; isAvailable: boolean; player?: string; date: string }[] = [];
-  selectedDate: string = 'today';
+  selectedDate: string = '';
 
   constructor(
     private modalController: ModalController,
@@ -22,8 +22,8 @@ export class Kort3Page implements OnInit {
   ngOnInit() {
     // Seçilen tarihi takip et
     this.dateService.selectedDate$.subscribe(date => {
-      this.selectedDate = date;
-      this.loadSlots();  // Seçilen tarihe ve kort numarasına göre verileri yükle
+      this.selectedDate = date; // Tarihi string olarak al
+      this.loadSlots(); // Seçilen tarihe göre verileri yükle
     });
   }
 
@@ -31,37 +31,24 @@ export class Kort3Page implements OnInit {
     this.kortService.allSlots$.subscribe(slots => {
       // Kort numarasına göre filtreleme yap (Kort 3)
       const kort3Slots = slots.filter(slot => slot.kort === 3);
-      
+
       // Tarih formatını belirle
-      let actualDate: string;
-      const today = new Date();
-      
-      if (this.selectedDate === 'today') {
-          actualDate = today.toISOString().split('T')[0]; // Bugünün tarihi
-      } else if (this.selectedDate === 'tomorrow') {
-          today.setDate(today.getDate() + 1);
-          actualDate = today.toISOString().split('T')[0]; // Yarınki tarih
-      } else {
-          actualDate = this.selectedDate; // Eğer başka bir tarih varsa
-      }
+      const actualDate = this.selectedDate.split('T')[0]; // Seçilen tarihin formatı
 
       // Kortun tüm zaman dilimlerini oluşturun (08:00-22:00 gibi)
       const allTimeSlots = this.generateTimeSlotsForDay(8, 22); // 08:00 - 22:00 arası
 
       // Gelen kort3 rezervasyonlarıyla boş slotları birleştirin
       const filteredSlots = allTimeSlots.map(time => {
-          const reservedSlot = kort3Slots.find(slot => slot.time === time && slot.date === actualDate);
-          return reservedSlot ? reservedSlot : {
-              kort: 3,  // Kort numarası
-              time: time,
-              isAvailable: true,  // Eğer rezervasyon yoksa boş slot
-              player: '',
-              date: actualDate
-          };
+        const reservedSlot = kort3Slots.find(slot => slot.time === time && slot.date === actualDate);
+        return reservedSlot ? reservedSlot : {
+          kort: 3, // Kort numarası
+          time: time,
+          isAvailable: true, // Eğer rezervasyon yoksa boş slot
+          player: '',
+          date: actualDate
+        };
       });
-      console.log('Actual date:', actualDate);
-      console.log('Filtered slots:', filteredSlots);
-
 
       // Ekranda gösterilecek slotları ayarla
       this.timeSlots = filteredSlots;
@@ -85,18 +72,18 @@ export class Kort3Page implements OnInit {
         component: RezervasyonModalComponent,
         cssClass: 'custom-modal',
         componentProps: {
-          startTime: slot.time,  // Başlangıç saati modala gönderiliyor
-          endTime: ''            // Bitiş saati modül içinde hesaplanacak
+          startTime: slot.time, // Başlangıç saati modala gönderiliyor
+          endTime: '' // Bitiş saati modül içinde hesaplanacak
         }
       });
-  
+
       modal.onDidDismiss().then((result) => {
         const data = result.data;
         if (data) {
-          this.reserveSlot(slot.time, data);  // Slotu rezerve et
+          this.reserveSlot(slot.time, data); // Slotu rezerve et
         }
       });
-  
+
       await modal.present();
     } else {
       console.log('Slot dolu, rezervasyon yapılamaz.');
@@ -109,8 +96,8 @@ export class Kort3Page implements OnInit {
       if (slot.time === time) {
         return {
           ...slot,
-          isAvailable: false,  // Slot artık dolu
-          player: data.player   // Oyuncu ismi ekleniyor
+          isAvailable: false, // Slot artık dolu
+          player: data.player // Oyuncu ismi ekleniyor
         };
       }
       return slot;
@@ -120,6 +107,6 @@ export class Kort3Page implements OnInit {
     this.timeSlots = updatedSlots;
 
     // Kort bilgilerini KortService'e göndererek güncelle
-    this.kortService.updateKortSlots(3, updatedSlots);  // Kort numarasını doğru girdiğinizden emin olun.
+    this.kortService.updateKortSlots(3, updatedSlots); // Kort numarasını doğru girdiğinizden emin olun.
   }
-}3
+}

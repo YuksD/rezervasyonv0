@@ -13,6 +13,8 @@ ion-content.custom-colored-content{
   --ion-background-color: #F9F8F6; /* Kırmızı arka plan */
 }
 ion-tab-bar.custom-tab-bar{
+
+  padding: 4px;
   --background: #F9F8F6;
   overflow: hidden;
   margin-bottom: 2px;

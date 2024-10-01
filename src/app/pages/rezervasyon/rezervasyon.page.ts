@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'; // Router'ı içe aktar
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { RezervasyonModalComponent } from './rezervasyon-modal/rezervasyon-modal.component';
-import { DateService } from 'src/app/services/date.service'; // DateService'i içe aktar
+import { DateService } from 'src/app/services/date.service';
 
 @Component({
   selector: 'app-rezervasyon',
@@ -10,18 +10,21 @@ import { DateService } from 'src/app/services/date.service'; // DateService'i i�
   styleUrls: ['./rezervasyon.page.scss'],
 })
 export class RezervasyonPage implements OnInit {
-  selectedDate: string = new Date().toISOString();
+  selectedDate: string; // ISO formatında tarih
   selectedDay: string = 'today'; // Seçilen gün başlangıçta 'today' olarak ayarlanır.
 
   constructor(
     private modalController: ModalController,
-    private dateService: DateService, // DateService'i constructor'a ekle
+    private dateService: DateService,
     public router: Router
-  ) {}
+  ) {
+    // Başlangıçta bugünün tarihini al ve ISO formatında ayarla
+    this.selectedDate = new Date().toISOString(); 
+  }
 
   async ngOnInit() {
-    // Başlangıçta bugünkü tarihi seçili tarih olarak ata
-    this.selectedDate = new Date().toISOString();
+    // Başlangıçta bugünkü tarihi DateService'e ata
+    this.dateService.setSelectedDate(this.selectedDate); 
   }
 
   async openReservationModal(startTime: string, endTime: string) {
@@ -31,43 +34,29 @@ export class RezervasyonPage implements OnInit {
       componentProps: {
         startTime: startTime,
         endTime: endTime,
-        selectedDate: this.selectedDate  // Tarih bilgisini modal'a ilet
+        selectedDate: this.selectedDate // Tarih bilgisini modal'a ilet
       }
     });
     return await modal.present();
   }
 
-  // Önceki günü seçen fonksiyon
-  oncekiGun() {
-    let selectedDateObj = new Date(this.selectedDate);
-    selectedDateObj.setDate(selectedDateObj.getDate() - 1);
-    this.selectedDate = selectedDateObj.toISOString();
-    this.dateService.setSelectedDate(selectedDateObj.toISOString().split('T')[0]); // Tarihi DateService'e güncelle
-  }
-  
-  sonrakiGun() {
-    let selectedDateObj = new Date(this.selectedDate);
-    selectedDateObj.setDate(selectedDateObj.getDate() + 1);
-    this.selectedDate = selectedDateObj.toISOString();
-    this.dateService.setSelectedDate(selectedDateObj.toISOString().split('T')[0]); // Tarihi DateService'e güncelle
-  }
-  
   setDate(value: string) {
     const today = new Date();
-    let selectedDateObj: Date;
 
     if (value === 'today') {
-      selectedDateObj = today; // Bugünün tarihi
+      this.selectedDate = today.toISOString(); // Bugünün tarihi
       this.selectedDay = 'today'; // Seçilen gün 'today' olarak güncellenir.
     } else if (value === 'tomorrow') {
-      selectedDateObj = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+      const tomorrow = new Date();
+      tomorrow.setDate(today.getDate() + 1);
+      this.selectedDate = tomorrow.toISOString();
       this.selectedDay = 'tomorrow'; // Seçilen gün 'tomorrow' olarak güncellenir.
-    } else {
-      selectedDateObj = new Date(); // Varsayılan bir tarih ataması yap
     }
 
-    this.selectedDate = selectedDateObj.toISOString();
-    this.dateService.setSelectedDate(selectedDateObj.toISOString().split('T')[0]);
+    this.updateDateService(); // DateService'i güncelle
   }
-  
+
+  private updateDateService() {
+    this.dateService.setSelectedDate(this.selectedDate); // DateService'e tarihi günceller
+  }
 }
