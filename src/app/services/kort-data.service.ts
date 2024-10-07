@@ -6,16 +6,18 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class KortDataService {
+  private kortlarUrl = 'assets/kortlar.json'; // JSON dosyası yolu
+  private rezervasyonlarUrl = 'assets/rezervasyonlar.json'; // JSON dosyası yolu
 
   constructor(private http: HttpClient) { }
 
   // Kort bilgilerini JSON dosyasından yükleyen fonksiyon
   getKortlar(): Observable<any> {
-    return this.http.get('assets/kortlar.json');
+    return this.http.get(this.kortlarUrl);
   }
 
   // Rezervasyon bilgilerini JSON dosyasından yükleyen fonksiyon
   getRezervasyonlar(): Observable<any> {
-    return this.http.get('assets/rezervasyonlar.json');
+    return this.http.get(this.rezervasyonlarUrl);
   }
 }

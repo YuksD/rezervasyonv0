@@ -9,7 +9,7 @@ import { ModalController } from '@ionic/angular';
 export class RezervasyonModalComponent implements OnInit {
   @Input() startTime: string = '';  // Başlangıç saati
   @Input() endTime: string = '';    // Bitiş saati (ilk hesaplama için)
-  @Input() selectedDate: string = '';
+  @Input() selectedDate: string = ''; // Seçilen tarih
   selectedDuration: number = 60;    // Varsayılan süre
   playerName: string = '';          // Oyuncu ismi
 
@@ -23,8 +23,8 @@ export class RezervasyonModalComponent implements OnInit {
   updateEndTime() {
     const [startHour, startMinute] = this.startTime.split(':').map(Number);
     const totalStartMinutes = startHour * 60 + startMinute;
-    const totalEndMinutes = totalStartMinutes + parseInt(this.selectedDuration.toString(), 10);
-    const endHour = Math.floor(totalEndMinutes / 60);
+    const totalEndMinutes = totalStartMinutes + this.selectedDuration; // Güncelleme
+    const endHour = Math.floor(totalEndMinutes / 60) % 24; // 24 saat formatı
     const endMinute = totalEndMinutes % 60;
     const formattedEndHour = endHour.toString().padStart(2, '0');
     const formattedEndMinute = endMinute.toString().padStart(2, '0');
@@ -36,7 +36,6 @@ export class RezervasyonModalComponent implements OnInit {
     this.selectedDuration = duration;  // Süreyi güncelle
     this.updateEndTime();  // Yeni süreye göre bitiş saatini hesapla
   }
-  
 
   dismiss() {
     this.modalController.dismiss();

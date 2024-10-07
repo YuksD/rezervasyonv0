@@ -1,40 +1,22 @@
 {
     "rezervasyonlar": [
-      { "kort": 1, "date": "2024-10-01", "time": "8:00", "player": "Ahmet" },
-      { "kort": 1, "date": "2024-10-01", "time": "8:30", "player": "Ahmet" },
-      { "kort": 1, "date": "2024-10-02", "time": "10:00", "player": "Ahmet" },
-      { "kort": 1, "date": "2024-10-02", "time": "10:30", "player": "Ahmet" },
-      { "kort": 1, "date": "2024-10-03", "time": "11:00", "player": "Ahmet" },
-      { "kort": 1, "date": "2024-10-03", "time": "11:30", "player": "Ahmet" },
-      { "kort": 1, "date": "2024-10-04", "time": "9:00", "player": "Ahmet" },
-      { "kort": 1, "date": "2024-10-04", "time": "9:30", "player": "Ahmet" },
-      { "kort": 1, "date": "2024-10-05", "time": "10:00", "player": "Ahmet" },
-      { "kort": 1, "date": "2024-10-05", "time": "10:30", "player": "Ahmet" },
+      { "kort": 1, "date": "2024-10-07", "time": "9:00", "player": "Ahmet" },
+      { "kort": 1, "date": "2024-10-07", "time": "9:30", "player": "Ahmet" },
+      { "kort": 1, "date": "2024-10-07", "time": "10:00", "player": "Ahmet" },
+      { "kort": 1, "date": "2024-10-07", "time": "10:30", "player": "Ahmet" },
+      { "kort": 1, "date": "2024-10-07", "time": "12:00", "player": "Ahmet" },
+      { "kort": 1, "date": "2024-10-07", "time": "12:30", "player": "Ahmet" },
+      { "kort": 1, "date": "2024-10-07", "time": "13:00", "player": "Ahmet" },
 
-      
-      { "kort": 2, "date": "2024-10-01", "time": "9:00", "player": "Necip" },
-      { "kort": 2, "date": "2024-10-01", "time": "9:30", "player": "Necip" },
-      { "kort": 2, "date": "2024-10-02", "time": "10:30", "player": "Ayşe" },
-      { "kort": 2, "date": "2024-10-02", "time": "11:30", "player": "Refik" },
-      { "kort": 2, "date": "2024-10-03", "time": "12:00", "player": "Refik" },
-      { "kort": 2, "date": "2024-10-03", "time": "13:00", "player": "Murtaza" },
-      { "kort": 2, "date": "2024-10-04", "time": "13:30", "player": "Murtaza" },
+      { "kort": 1, "date": "2024-10-08", "time": "14:30", "player": "Ahmet" },
+      { "kort": 1, "date": "2024-10-08", "time": "15:00", "player": "Ahmet" },
+      { "kort": 1, "date": "2024-10-08", "time": "15:30", "player": "Ahmet" },
+      { "kort": 1, "date": "2024-10-08", "time": "16:00", "player": "Ahmet" },
+      { "kort": 1, "date": "2024-10-08", "time": "16:30", "player": "Ahmet" },
 
-      { "kort": 3, "date": "2024-10-01", "time": "9:00", "player": "Hayriye" },
-      { "kort": 3, "date": "2024-10-01", "time": "9:30", "player": "Hayriye" },
-      { "kort": 3, "date": "2024-10-02", "time": "10:00", "player": "Cevriye" },
-      { "kort": 3, "date": "2024-10-02", "time": "10:30", "player": "Cevriye" },
-      { "kort": 3, "date": "2024-10-03", "time": "11:30", "player": "Huriye" },
-      { "kort": 3, "date": "2024-10-03", "time": "12:00", "player": "Huriye" },
-      { "kort": 3, "date": "2024-10-04", "time": "13:00", "player": "Nuriye" },
-      { "kort": 3, "date": "2024-10-04", "time": "13:30", "player": "Nuriye" },
+      { "kort": 2, "date": "2024-10-07", "time": "8:00", "player": "Ahmet" },
+      { "kort": 2, "date": "2024-10-08", "time": "16:00", "player": "Ahmet" }
 
-      { "kort": 4, "date": "2024-10-01", "time": "9:00", "player": "Hediye" },
-      { "kort": 4, "date": "2024-10-01", "time": "9:30", "player": "Hediye" },
-      { "kort": 4, "date": "2024-10-02", "time": "11:30", "player": "Şükriye" },
-      { "kort": 4, "date": "2024-10-03", "time": "13:00", "player": "Rukiyesu" },
-      { "kort": 4, "date": "2024-10-03", "time": "13:30", "player": "Rukiyesu" }
-      
     ]
   }
   

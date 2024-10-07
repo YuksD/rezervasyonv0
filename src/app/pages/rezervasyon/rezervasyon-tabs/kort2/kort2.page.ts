@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { RezervasyonModalComponent } from 'src/app/pages/rezervasyon/rezervasyon-modal/rezervasyon-modal.component';
 import { KortService } from 'src/app/services/kort.service';
 import { DateService } from 'src/app/services/date.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-kort2',
   templateUrl: './kort2.page.html',
   styleUrls: ['./kort2.page.scss'],
 })
-export class Kort2Page implements OnInit {
+export class Kort2Page implements OnInit, OnDestroy {
   timeSlots: { kort: number; time: string; isAvailable: boolean; player?: string; date: string }[] = [];
   selectedDate: string = '';
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private modalController: ModalController,
@@ -20,42 +22,37 @@ export class Kort2Page implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Seçilen tarihi takip et
-    this.dateService.selectedDate$.subscribe(date => {
-      this.selectedDate = date; // Tarihi string olarak al
-      this.loadSlots(); // Seçilen tarihe göre verileri yükle
+    const dateSubscription = this.dateService.selectedDate$.subscribe(date => {
+      this.selectedDate = date;
+      this.loadSlots();
     });
+    this.subscriptions.push(dateSubscription);
   }
 
   loadSlots() {
-    this.kortService.allSlots$.subscribe(slots => {
-      // Kort numarasına göre filtreleme yap (Kort 2)
+    const slotsSubscription = this.kortService.allSlots$.subscribe(slots => {
       const kort2Slots = slots.filter(slot => slot.kort === 2);
+      const actualDate = this.selectedDate.split('T')[0];
 
-      // Tarih formatını belirle
-      const actualDate = this.selectedDate.split('T')[0]; // Seçilen tarihin formatı
+      const allTimeSlots = this.generateTimeSlotsForDay(8, 22);
 
-      // Kortun tüm zaman dilimlerini oluşturun (08:00-22:00 gibi)
-      const allTimeSlots = this.generateTimeSlotsForDay(8, 22); // 08:00 - 22:00 arası
-
-      // Gelen kort2 rezervasyonlarıyla boş slotları birleştirin
       const filteredSlots = allTimeSlots.map(time => {
         const reservedSlot = kort2Slots.find(slot => slot.time === time && slot.date === actualDate);
         return reservedSlot ? reservedSlot : {
-          kort: 2, // Kort numarası
+          kort: 2,
           time: time,
-          isAvailable: true, // Eğer rezervasyon yoksa boş slot
+          isAvailable: true,
           player: '',
           date: actualDate
         };
       });
 
-      // Ekranda gösterilecek slotları ayarla
       this.timeSlots = filteredSlots;
     });
+    
+    this.subscriptions.push(slotsSubscription);
   }
 
-  // 08:00-22:00 arası her yarım saatte bir zaman dilimi üretir
   private generateTimeSlotsForDay(startHour: number, endHour: number): string[] {
     const timeSlots = [];
     for (let hour = startHour; hour < endHour; hour++) {
@@ -65,22 +62,21 @@ export class Kort2Page implements OnInit {
     return timeSlots;
   }
 
-  // Modal açma ve rezervasyon yapma fonksiyonu
   async onBadgeClick(slot: any) {
     if (slot.isAvailable) {
       const modal = await this.modalController.create({
         component: RezervasyonModalComponent,
         cssClass: 'custom-modal',
         componentProps: {
-          startTime: slot.time, // Başlangıç saati modala gönderiliyor
-          endTime: '' // Bitiş saati modül içinde hesaplanacak
+          startTime: slot.time,
+          endTime: ''
         }
       });
 
       modal.onDidDismiss().then((result) => {
         const data = result.data;
         if (data) {
-          this.reserveSlot(slot.time, data); // Slotu rezerve et
+          this.reserveSlot(slot.time, data);
         }
       });
 
@@ -90,23 +86,23 @@ export class Kort2Page implements OnInit {
     }
   }
 
-  // Slotu rezerve etme işlemi
   reserveSlot(time: string, data: { player: string; startTime: string; endTime: string; duration: number }) {
     const updatedSlots = this.timeSlots.map(slot => {
       if (slot.time === time) {
         return {
           ...slot,
-          isAvailable: false, // Slot artık dolu
-          player: data.player // Oyuncu ismi ekleniyor
+          isAvailable: false,
+          player: data.player
         };
       }
       return slot;
     });
 
-    // Güncellenmiş slotları ayarla
     this.timeSlots = updatedSlots;
+    this.kortService.updateKortSlots(2, updatedSlots); // Kort numarası 2
+  }
 
-    // Kort bilgilerini KortService'e göndererek güncelle
-    this.kortService.updateKortSlots(2, updatedSlots); // Kort numarasını doğru girdiğinizden emin olun.
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

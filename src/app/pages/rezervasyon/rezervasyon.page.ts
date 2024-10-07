@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { RezervasyonModalComponent } from './rezervasyon-modal/rezervasyon-modal.component';
 import { DateService } from 'src/app/services/date.service';
+import { KortService } from 'src/app/services/kort.service'; // KortService'i içe aktar
 
 @Component({
   selector: 'app-rezervasyon',
@@ -16,6 +17,7 @@ export class RezervasyonPage implements OnInit {
   constructor(
     private modalController: ModalController,
     private dateService: DateService,
+    private kortService: KortService, // KortService'i tanımlayın
     public router: Router
   ) {
     // Başlangıçta bugünün tarihini al ve ISO formatında ayarla
@@ -25,6 +27,7 @@ export class RezervasyonPage implements OnInit {
   async ngOnInit() {
     // Başlangıçta bugünkü tarihi DateService'e ata
     this.dateService.setSelectedDate(this.selectedDate); 
+    this.kortService.loadSlotsForDate(this.selectedDate); // Kort slotlarını yükle
   }
 
   async openReservationModal(startTime: string, endTime: string) {
@@ -54,6 +57,7 @@ export class RezervasyonPage implements OnInit {
     }
 
     this.updateDateService(); // DateService'i güncelle
+    this.kortService.loadSlotsForDate(this.selectedDate); // Seçilen tarihe göre slotları yükle
   }
 
   private updateDateService() {

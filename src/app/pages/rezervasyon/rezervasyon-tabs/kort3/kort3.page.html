@@ -4,6 +4,7 @@
       <ion-label class="time-label">
         {{ slot.time }}
       </ion-label>
+
       <div class="player-container" (click)="onBadgeClick(slot)">
         <span [ngClass]="{'filled-slot': !slot.isAvailable, 'empty-slot': slot.isAvailable}">
           {{ slot.isAvailable ? 'Boş' : slot.player }}

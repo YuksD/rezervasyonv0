@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { RezervasyonModalComponent } from 'src/app/pages/rezervasyon/rezervasyon-modal/rezervasyon-modal.component';
 import { KortService } from 'src/app/services/kort.service';
 import { DateService } from 'src/app/services/date.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-kort1',
@@ -12,6 +13,7 @@ import { DateService } from 'src/app/services/date.service';
 export class Kort1Page implements OnInit {
   timeSlots: { kort: number; time: string; isAvailable: boolean; player?: string; date: string }[] = [];
   selectedDate: string = '';
+  private subscriptions: Subscription[] = []; // Abonelikleri saklayacak dizi
 
   constructor(
     private modalController: ModalController,
@@ -21,18 +23,17 @@ export class Kort1Page implements OnInit {
 
   ngOnInit() {
     // Seçilen tarihi takip et
-    this.dateService.selectedDate$.subscribe(date => {
+    const dateSubscription = this.dateService.selectedDate$.subscribe(date => {
       this.selectedDate = date; // Tarihi string olarak al
       this.loadSlots(); // Seçilen tarihe göre verileri yükle
     });
+    this.subscriptions.push(dateSubscription);
   }
 
   loadSlots() {
-    this.kortService.allSlots$.subscribe(slots => {
+    const slotsSubscription = this.kortService.allSlots$.subscribe(slots => {
       // Kort numarasına göre filtreleme yap (Kort 1)
       const kort1Slots = slots.filter(slot => slot.kort === 1);
-
-      // Tarih formatını belirle
       const actualDate = this.selectedDate.split('T')[0]; // Seçilen tarihin formatı
 
       // Kortun tüm zaman dilimlerini oluşturun (08:00-22:00 gibi)
@@ -53,6 +54,8 @@ export class Kort1Page implements OnInit {
       // Ekranda gösterilecek slotları ayarla
       this.timeSlots = filteredSlots;
     });
+    
+    this.subscriptions.push(slotsSubscription);
   }
 
   // 08:00-22:00 arası her yarım saatte bir zaman dilimi üretir
@@ -108,5 +111,10 @@ export class Kort1Page implements OnInit {
 
     // Kort bilgilerini KortService'e göndererek güncelle
     this.kortService.updateKortSlots(1, updatedSlots); // Kort numarasını doğru girdiğinizden emin olun.
+  }
+
+  // Bileşen yok edilirken tüm abonelikleri iptal et
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }
