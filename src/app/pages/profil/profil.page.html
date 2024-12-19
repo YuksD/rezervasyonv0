@@ -13,5 +13,24 @@
 
 
 <ion-content [fullscreen]="true">
-  <p>PROFIL</p>
+
+  <app-avatar></app-avatar>
+
+  <app-profile-info [profil]="profil"></app-profile-info>
+
+
+
+  <!-- profil fotoğrafı değiştirme butonu -->
+  <app-custom-button
+  [buttonText]="'Değiştir'" 
+  (buttonClick)="onChangePhoto()">
+  </app-custom-button>
+
+  <!-- şifre değiştirme butonu -->
+  <app-custom-button
+    [buttonText]="'Şifreyi Değiştir'"
+    (buttonClick)="onChangePassword()">
+  </app-custom-button>
+  <app-achievements [achievements]="profil.achievements"></app-achievements>
+
 </ion-content>

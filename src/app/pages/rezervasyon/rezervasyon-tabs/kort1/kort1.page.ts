@@ -26,18 +26,23 @@ export class Kort1Page implements OnInit {
     const dateSubscription = this.dateService.selectedDate$.subscribe(date => {
       this.selectedDate = date; // Tarihi string olarak al
       this.loadSlots(); // Seçilen tarihe göre verileri yükle
+
     });
     this.subscriptions.push(dateSubscription);
   }
 
   loadSlots() {
     const slotsSubscription = this.kortService.allSlots$.subscribe(slots => {
+
       // Kort numarasına göre filtreleme yap (Kort 1)
       const kort1Slots = slots.filter(slot => slot.kort === 1);
       const actualDate = this.selectedDate.split('T')[0]; // Seçilen tarihin formatı
 
+      //console.log(kort1Slots,' slots kort1');
+
       // Kortun tüm zaman dilimlerini oluşturun (08:00-22:00 gibi)
       const allTimeSlots = this.generateTimeSlotsForDay(8, 22); // 08:00 - 22:00 arası
+
 
       // Gelen kort1 rezervasyonlarıyla boş slotları birleştirin
       const filteredSlots = allTimeSlots.map(time => {
@@ -50,6 +55,7 @@ export class Kort1Page implements OnInit {
           date: actualDate
         };
       });
+
 
       // Ekranda gösterilecek slotları ayarla
       this.timeSlots = filteredSlots;

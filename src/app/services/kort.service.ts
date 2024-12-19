@@ -40,11 +40,10 @@ export class KortService {
     // Slotları filtreler (YYYY-MM-DD formatında)
     const filteredSlots = this.allSlots.value.filter(slot => slot.date === selectedDateFormatted);
     this.allSlots.next(filteredSlots); // Filtrelenmiş slotlar güncellenir
-    console.log(filteredSlots, 'fltrd slots');
   }
 
   // Kort ve rezervasyon bilgilerini yükler
-  public loadAllKortSlots() {
+  private loadAllKortSlots() {
     this.kortDataService.getRezervasyonlar().subscribe(rezervasyonlar => {
       this.rezervasyonlar = rezervasyonlar.rezervasyonlar;
       this.kortDataService.getKortlar().subscribe(kortlar => {
@@ -98,6 +97,8 @@ export class KortService {
   // Tüm kortlardaki slotları günceller
   private updateAllSlots(newSlots: Rezervasyon[]) {
     const currentSlots = this.allSlots.value;
+    //console.log(currentSlots, 'current slots');
+
 
     // Mevcut slotları yeni slotlarla güncelle
     const updatedSlots = currentSlots.map(slot => {
